@@ -1,4 +1,6 @@
 require('PG')
+require_relative('../customer')
+require_relative('../ticket')
 
 
 class Film
@@ -20,7 +22,8 @@ end
 def self.all()
   sql = "SELECT * FROM films;"
   films = SqlRunner.run(sql)
-  return films.map { |film| Film.new(film)  }
+  films = films.map { |film| Film.new(film)  }
+  return films.sort!
 end
 
 def self.delete_all()

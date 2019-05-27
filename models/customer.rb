@@ -1,4 +1,5 @@
 require ('PG')
+require_relative('../film')
 
 class Customer
   attr_reader :id
@@ -31,7 +32,8 @@ end
 def self.all()
   sql = "SELECT * FROM customers"
   customers = SqlRunner.run(sql)
-  return customers.map { |customer| Customer.new(customer)  }
+  customers = customers.map { |customer| Customer.new(customer)  }
+  return customers.sort! # not 100% sure
 end
 
 def films()

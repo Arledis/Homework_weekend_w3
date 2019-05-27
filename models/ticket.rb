@@ -1,4 +1,6 @@
 require( 'PG' )
+require_relative('../film')
+require_relative('../customer')
 
 class Ticket
 attr_reader :id
