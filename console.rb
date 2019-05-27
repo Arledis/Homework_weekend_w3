@@ -1,6 +1,6 @@
-require_relative('../models/customer')
-require_relative('../models/ticket')
-require_relative('../models/film')
+require_relative('./models/customer')
+require_relative('./models/ticket')
+require_relative('./models/film')
 
 
 require( 'pry' )
@@ -14,6 +14,8 @@ customer2 = Customer.new({'name' => 'Duncan', 'cash' => '120'})
 customer2.save()
 customer3 = Customer.new({'name' => 'Allison', 'cash' => '20'})
 customer3.save()
+customer4 = Customer.new({'name' => 'Allison', 'cash' => '20'})
+customer4.save()
 
 
 all_customers = Customer.all()

@@ -1,5 +1,5 @@
-require ('PG')
-require_relative('../film')
+require_relative('../db/sql_runner')
+
 
 class Customer
   attr_reader :id
@@ -11,29 +11,33 @@ def initialize(options)
   @cash = options['cash'].to_i
 end
 
+# CREATE
 def save()
-  sql = "INSERT INTO customers (name, cash) VALUES ($1, $2) RETURNING id = $1"
+  sql = "INSERT INTO customers (name, cash) VALUES ($1, $2) RETURNING id"
   values = [@name, @cash]
-  user = SqlRunner.run( sql, values ).first
-  @id = user['id'].to_i
+  customer = SqlRunner.run( sql, values ).first
+  @id = customer['id'].to_i
 end
 
+# UPDATE
 def update()
   sql = "UPDATE customers SET name = $1 WHERE id = $2"
   values = [@name, @id]
   SqlRunner.run( sql, values )
 end
 
+# DELETE
 def self.delete_all()
-  sql = "DELETE * FROM customers"
+  sql = "DELETE FROM customers"
   SqlRunner.run(sql)
 end
 
+# READ
 def self.all()
-  sql = "SELECT * FROM customers"
+  sql = "SELECT * FROM customers ORDER BY name;"
   customers = SqlRunner.run(sql)
   customers = customers.map { |customer| Customer.new(customer)  }
-  return customers.sort! # not 100% sure
+  return customers #sort! #not 100% sure
 end
 
 def films()

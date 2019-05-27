@@ -1,6 +1,4 @@
-require('PG')
-require_relative('../customer')
-require_relative('../ticket')
+require_relative('../db/sql_runner')
 
 
 class Film
@@ -12,6 +10,7 @@ def initialize(options)
   @price = options['price'].to_i
 end
 
+#CREATE
 def save()
   sql = "INSERT INTO films (title, price) VALUES ($1, $2) RETURNING id"
   values = [@title, @price]
@@ -19,15 +18,27 @@ def save()
   @id = film['id'].to_i
 end
 
-def self.all()
-  sql = "SELECT * FROM films;"
-  films = SqlRunner.run(sql)
-  films = films.map { |film| Film.new(film)  }
-  return films.sort!
+#UPDATE
+
+def update()
+  sql = "UPDATE films SET (title, price) = ($1, $2) WHERE id = $3"
+  values = [@title, @price, @id]
+  SqlRunner.run(sql, values)
 end
 
+# READ
+
+def self.all()
+  sql = "SELECT * FROM films ORDER BY title;"
+  films = SqlRunner.run(sql)
+  films = films.map { |film| Film.new(film)  }
+  return films
+end
+
+# DELETE
+
 def self.delete_all()
-  sql = "DELETE * FROM films;"
+  sql = "DELETE FROM films;"
   SqlRunner.run(sql)
 end
 
@@ -48,4 +59,6 @@ def self.find(id) # EXTENSION
   result = SqlRunner.run(sql, values)
   films = self.new(result.first)
   return films
+end
+
 end
